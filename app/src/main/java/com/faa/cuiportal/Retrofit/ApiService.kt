@@ -1,13 +1,13 @@
 package com.faa.cuiportal.Retrofit
 
-// ApiService.kt
-import com.faa.cuiportal.Model.Response
+import com.faa.cuiportal.Model.ApiResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface ApiService {
+
     @FormUrlEncoded
     @POST("signup.php")
     fun signUp(
@@ -15,12 +15,12 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String,
         @Field("user_type") userType: String
-    ): Call<Response>
+    ): Call<ApiResponse>
 
     @FormUrlEncoded
-    @POST("login.php")
+    @POST("login.php") // Ensure this path is correct
     fun login(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<Response>
+    ): Call<ApiResponse>
 }

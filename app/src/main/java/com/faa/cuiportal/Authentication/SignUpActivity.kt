@@ -12,6 +12,7 @@ import com.faa.cuiportal.R
 import com.faa.cuiportal.Staff.StaffDashboardActivity
 import com.faa.cuiportal.Users.UserDashboardActivity
 import com.faa.cuiportal.ViewModel.SignUpViewModel
+
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
@@ -42,14 +43,15 @@ class SignUpActivity : AppCompatActivity() {
                 )
                 signUpViewModel.response.observe(this) { response ->
                     if (response.message == "Success") {
-                        if (userType == "user") {
-                            // Navigate to UserDashboardActivity
-                            startActivity(Intent(this, UserDashboardActivity::class.java))
-                            finish()
-                        } else if (userType == "staff") {
-                            // Navigate to StaffDashboardActivity
-                            startActivity(Intent(this, StaffDashboardActivity::class.java))
-                            finish()
+                        when (userType) {
+                            "user" -> {
+                                startActivity(Intent(this, UserDashboardActivity::class.java))
+                                finish()
+                            }
+                            "staff" -> {
+                                startActivity(Intent(this, StaffDashboardActivity::class.java))
+                                finish()
+                            }
                         }
                     } else {
                         Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()

@@ -7,5 +7,3 @@ data class User(
     val userType: String
 )
 
-// Response.kt
-data class Response(val message: String)

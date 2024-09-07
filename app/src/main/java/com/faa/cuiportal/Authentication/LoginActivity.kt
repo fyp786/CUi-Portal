@@ -12,7 +12,6 @@ import com.faa.cuiportal.Staff.StaffDashboardActivity
 import com.faa.cuiportal.Users.UserDashboardActivity
 import com.faa.cuiportal.ViewModel.SignInViewModel
 
-// LoginActivity.kt
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var signInViewModel: SignInViewModel
@@ -28,19 +27,29 @@ class LoginActivity : AppCompatActivity() {
         val signInButton: Button = findViewById(R.id.btn_sign_in)
 
         signInButton.setOnClickListener {
-            signInViewModel.login(email.text.toString(), password.text.toString())
-            signInViewModel.response.observe(this) { response ->
-                if (response.message == "user") {
-                    // Navigate to UserDashboardActivity
-                    startActivity(Intent(this, UserDashboardActivity::class.java))
-                    finish()
-                } else if (response.message == "staff") {
-                    // Navigate to StaffDashboardActivity
-                    startActivity(Intent(this, StaffDashboardActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
+            val enteredEmail = email.text.toString().trim() // Ensure no extra spaces
+            val enteredPassword = password.text.toString().trim() // Ensure no extra spaces
+
+            if (enteredEmail.isNotEmpty() && enteredPassword.isNotEmpty()) {
+                signInViewModel.login(enteredEmail, enteredPassword)
+
+                signInViewModel.response.observe(this) { response ->
+                    when (response.message) {
+                        "user" -> {
+                            startActivity(Intent(this, UserDashboardActivity::class.java))
+                            finish()
+                        }
+                        "staff" -> {
+                            startActivity(Intent(this, StaffDashboardActivity::class.java))
+                            finish()
+                        }
+                        else -> {
+                            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
+            } else {
+                Toast.makeText(this, "Please fill in both email and password", Toast.LENGTH_SHORT).show()
             }
         }
     }

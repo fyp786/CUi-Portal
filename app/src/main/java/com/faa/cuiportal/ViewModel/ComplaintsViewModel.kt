@@ -23,14 +23,17 @@ class ComplaintsViewModel : ViewModel() {
                         _response.value = response.body()
                     } else {
                         Log.e("API Error", "Error response code: ${response.code()}")
-                        _response.value = ApiResponse("Error creating request")
+                        // Provide a value for the 'message' parameter
+                        _response.value = ApiResponse(message = "Error creating request")
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                     Log.e("API Error", "API call failed: ${t.message}")
-                    _response.value = ApiResponse("Error: ${t.message}")
+                    // Provide a value for the 'message' parameter
+                    _response.value = ApiResponse(message = "Error: ${t.message}")
                 }
             })
     }
 }
+

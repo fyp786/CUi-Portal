@@ -59,7 +59,9 @@ class SignUpActivity : AppCompatActivity() {
                     if (response.message == "Success") {
                         when (userType) {
                             "user" -> {
-                                startActivity(Intent(this, UserDashboardActivity::class.java))
+                                val intent = Intent(this, UserDashboardActivity::class.java)
+                                intent.putExtra("USERNAME", username.text.toString()) // Pass the username
+                                startActivity(intent)
                                 finish()
                             }
                             "staff" -> {
@@ -75,5 +77,6 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }

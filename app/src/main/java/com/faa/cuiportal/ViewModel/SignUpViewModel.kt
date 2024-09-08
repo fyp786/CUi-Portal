@@ -18,11 +18,23 @@ class SignUpViewModel : ViewModel() {
         RetrofitInstance.apiService.signUp(username, email, password, userType)
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: RetrofitResponse<ApiResponse>) {
-                    _response.value = response.body()
+                    if (response.isSuccessful && response.body() != null) {
+                        _response.value = response.body()
+                    } else {
+                        // Handle API response error
+                        _response.value = ApiResponse(
+                            message = "Error creating account",
+                            username = username // Include username if necessary
+                        )
+                    }
                 }
 
                 override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    _response.value = ApiResponse("Error: ${t.message}")
+                    // Handle network error
+                    _response.value = ApiResponse(
+                        message = "Error: ${t.message}",
+                        username = username // Include username if necessary
+                    )
                 }
             })
     }

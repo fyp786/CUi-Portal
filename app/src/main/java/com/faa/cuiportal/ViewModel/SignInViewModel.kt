@@ -27,13 +27,19 @@ class SignInViewModel : ViewModel() {
                         _response.value = apiResponse
                     } else {
                         Log.e("LoginError", "Error response code: ${response.code()}")
-                        _response.value = ApiResponse("Invalid credentials")
+                        _response.value = ApiResponse(
+                            message = "Invalid credentials",
+                            username = null // Or provide a default value if applicable
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                     Log.e("LoginError", "API call failed: ${t.message}")
-                    _response.value = ApiResponse("Error: ${t.message}")
+                    _response.value = ApiResponse(
+                        message = "Error: ${t.message}",
+                        username = null // Or provide a default value if applicable
+                    )
                 }
             })
     }

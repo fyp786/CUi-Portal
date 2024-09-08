@@ -18,7 +18,6 @@ import com.faa.cuiportal.ViewModel.SignInViewModel
 class LoginActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var createNewAccount: TextView
-
     private lateinit var signInViewModel: SignInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,25 +56,26 @@ class LoginActivity : AppCompatActivity() {
             if (response.user_type != null) {
                 val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putString("username", response.user?.username) // Save username
-                editor.putString("user_id", response.user?.userId) // Save user ID
+                editor.putString("username", response.username) // Save username
                 editor.apply()
 
-                val intent = Intent(this, when (response.user_type) {
-                    "user" -> UserDashboardActivity::class.java
-                    "staff" -> StaffDashboardActivity::class.java
-                    "admin" -> AdminDashboardActivity::class.java
+                val intent = when (response.user_type) {
+                    "user" -> Intent(this, UserDashboardActivity::class.java).apply {
+                        putExtra("USERNAME", response.username)
+                    }
+                    "staff" -> Intent(this, StaffDashboardActivity::class.java)
+                    "admin" -> Intent(this, AdminDashboardActivity::class.java)
                     else -> null
-                })
+                }
 
-                if (intent != null) {
-                    intent.putExtra("USER_ID", response.user?.userId)
-                    intent.putExtra("USERNAME", response.user?.username)
-                    startActivity(intent)
+                intent?.let {
+                    startActivity(it)
                     finish()
-                } else {
+                } ?: run {
                     Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Toast.makeText(this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show()
             }
         }
     }

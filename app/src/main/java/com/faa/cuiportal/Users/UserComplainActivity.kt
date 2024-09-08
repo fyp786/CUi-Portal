@@ -1,5 +1,6 @@
 package com.faa.cuiportal.Users
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -56,10 +57,19 @@ class UserComplainActivity : AppCompatActivity() {
                     enteredDescription,
                     selectedLocation,
                     enteredRoomNumber,
-                    username // Send username to the ViewModel
+                    username
                 )
                 complaintsViewModel.response.observe(this) { response ->
                     Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                    if (response.message.contains("successfully", ignoreCase = true)) {
+                        // Navigate to UserDashboardActivity if the request was successful
+                        val intent = Intent(this, UserDashboardActivity::class.java)
+                        intent.putExtra("user_id", userId)
+                        intent.putExtra("username", username) // Added username
+
+                        startActivity(intent)
+                        finish() // Optionally finish this activity
+                    }
                 }
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()

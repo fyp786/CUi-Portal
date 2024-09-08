@@ -3,6 +3,7 @@ package com.faa.cuiportal.Users
 import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.faa.cuiportal.R
 
@@ -18,14 +19,15 @@ class UserDashboardActivity : AppCompatActivity() {
 
         requestMaintenanceLayout = findViewById(R.id.requestmaintanace)
 
-        userId = intent.getStringExtra("USER_ID") ?: ""
+        // Retrieve the username from the Intent
+        userId = intent.getStringExtra("user_id") ?: "unknown_id"
         username = intent.getStringExtra("USERNAME") ?: ""
 
+        val userNameTextView: TextView = findViewById(R.id.user_name)
+        userNameTextView.text = username
         requestMaintenanceLayout.setOnClickListener {
-            val intent = Intent(this@UserDashboardActivity, UserComplainActivity::class.java).apply {
-                putExtra("USER_ID", userId)
-                putExtra("USERNAME", username)
-            }
+            val intent = Intent(this@UserDashboardActivity, UserComplainActivity::class.java)
+
             startActivity(intent)
         }
     }

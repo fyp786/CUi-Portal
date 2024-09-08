@@ -10,29 +10,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response as RetrofitResponse
 
-class SignInViewModel : ViewModel() {
+class ComplaintsViewModel : ViewModel() {
 
     private val _response = MutableLiveData<ApiResponse>()
     val response: LiveData<ApiResponse> get() = _response
 
-    fun login(email: String, password: String) {
-        RetrofitInstance.apiService.login(email, password)
+    fun newRequest(title: String, description: String, location: String, roomNumber: String, username: String) {
+        RetrofitInstance.apiService.newRequest("new_request", title, description, location, roomNumber, username)
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: RetrofitResponse<ApiResponse>) {
                     if (response.isSuccessful && response.body() != null) {
-                        val apiResponse = response.body()
-                        Log.d("LoginResponse", "Response body: $apiResponse")
-
-                        // Handle response
-                        _response.value = apiResponse
+                        _response.value = response.body()
                     } else {
-                        Log.e("LoginError", "Error response code: ${response.code()}")
-                        _response.value = ApiResponse("Invalid credentials")
+                        Log.e("API Error", "Error response code: ${response.code()}")
+                        _response.value = ApiResponse("Error creating request")
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    Log.e("LoginError", "API call failed: ${t.message}")
+                    Log.e("API Error", "API call failed: ${t.message}")
                     _response.value = ApiResponse("Error: ${t.message}")
                 }
             })

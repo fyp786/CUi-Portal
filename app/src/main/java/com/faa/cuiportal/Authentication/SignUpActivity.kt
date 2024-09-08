@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +16,8 @@ import com.faa.cuiportal.Users.UserDashboardActivity
 import com.faa.cuiportal.ViewModel.SignUpViewModel
 
 class SignUpActivity : AppCompatActivity() {
+    private lateinit var alreadyHaveAccount: TextView
+    private lateinit var back_button: ImageView
 
     private lateinit var signUpViewModel: SignUpViewModel
 
@@ -29,6 +33,16 @@ class SignUpActivity : AppCompatActivity() {
         val password: EditText = findViewById(R.id.et_password)
         val confirmPassword: EditText = findViewById(R.id.et_confirm_password)
         val signUpButton: Button = findViewById(R.id.btn_sign_up)
+        alreadyHaveAccount = findViewById(R.id.tv_sign_in)
+        back_button = findViewById(R.id.back_button)
+
+        back_button.setOnClickListener {
+            startActivity(Intent(this@SignUpActivity, AuthenticationActivity::class.java))
+        }
+
+        alreadyHaveAccount.setOnClickListener {
+            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+        }
 
         signUpButton.setOnClickListener {
             val selectedType = spinner.selectedItem.toString()

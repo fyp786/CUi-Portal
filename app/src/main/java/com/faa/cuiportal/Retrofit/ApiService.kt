@@ -18,9 +18,34 @@ interface ApiService {
     ): Call<ApiResponse>
 
     @FormUrlEncoded
-    @POST("login.php") // Ensure this path is correct
+    @POST("login.php")
     fun login(
         @Field("email") email: String,
         @Field("password") password: String
+    ): Call<ApiResponse>
+    @FormUrlEncoded
+    @POST("complaints.php")
+    fun newRequest(
+        @Field("action") action: String,
+        @Field("title") title: String,
+        @Field("description") description: String,
+        @Field("location") location: String,
+        @Field("room_number") roomNumber: String,
+        @Field("username") username: String
+
+    ): Call<ApiResponse>
+
+    @FormUrlEncoded
+    @POST("complaints.php")
+    fun pauseRequest(
+        @Field("action") action: String,
+        @Field("id") id: Int
+    ): Call<ApiResponse>
+
+    @FormUrlEncoded
+    @POST("complaints.php")
+    fun resolveRequest(
+        @Field("action") action: String,
+        @Field("id") id: Int
     ): Call<ApiResponse>
 }

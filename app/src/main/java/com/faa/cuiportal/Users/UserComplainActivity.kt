@@ -24,16 +24,13 @@ class UserComplainActivity : AppCompatActivity() {
         val submitButton: Button = findViewById(R.id.submit_btn)
         val cancelButton: Button = findViewById(R.id.cancel_btn)
 
-        // Retrieve user ID and username from SharedPreferences
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "unknown_user") ?: "unknown_user"
         val userId = sharedPreferences.getString("user_id", "unknown_id") ?: "unknown_id"
 
-        // Log the retrieved username and userId
         Log.d("UserComplainActivity", "Retrieved username: $username")
         Log.d("UserComplainActivity", "Retrieved userId: $userId")
 
-        // Spinner setup
         ArrayAdapter.createFromResource(
             this,
             R.array.select_location,
@@ -62,13 +59,7 @@ class UserComplainActivity : AppCompatActivity() {
                 complaintsViewModel.response.observe(this) { response ->
                     Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
                     if (response.message.contains("successfully", ignoreCase = true)) {
-                        // Navigate to UserDashboardActivity if the request was successful
-                        val intent = Intent(this, UserDashboardActivity::class.java)
-                        intent.putExtra("user_id", userId)
-                        intent.putExtra("username", username) // Added username
-
-                        startActivity(intent)
-                        finish() // Optionally finish this activity
+                       finish()
                     }
                 }
             } else {

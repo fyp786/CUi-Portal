@@ -1,9 +1,12 @@
 package com.faa.cuiportal.Retrofit
 
 import com.faa.cuiportal.Model.ApiResponse
+import com.faa.cuiportal.Model.Request
+import com.faa.cuiportal.Model.User
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
@@ -32,7 +35,6 @@ interface ApiService {
         @Field("location") location: String,
         @Field("room_number") roomNumber: String,
         @Field("username") username: String
-
     ): Call<ApiResponse>
 
     @FormUrlEncoded
@@ -48,4 +50,13 @@ interface ApiService {
         @Field("action") action: String,
         @Field("id") id: Int
     ): Call<ApiResponse>
+
+    @FormUrlEncoded
+    @POST("fetch_staff.php")
+    fun getStaffMembers(
+        @Field("action") action: String = "getStaff"
+    ): Call<List<User>>
+    @GET("fetch_new_requests.php")
+    fun getNewRequests(): Call<List<Request>>
+
 }

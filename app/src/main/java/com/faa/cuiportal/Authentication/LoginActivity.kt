@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // Observe the response once, outside of the click listener
         signInViewModel.response.observe(this) { response ->
             if (response.user_type != null) {
                 val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)

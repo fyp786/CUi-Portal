@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faa.cuiportal.Model.User
 import com.faa.cuiportal.R
 
-class StaffAdapter(private val staffList: List<User>) : RecyclerView.Adapter<StaffAdapter.StaffViewHolder>() {
+class StaffAdapter(
+    private val staffList: List<User>,
+    private val onItemClick: (User) -> Unit
+) : RecyclerView.Adapter<StaffAdapter.StaffViewHolder>() {
 
     class StaffViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.tvName)
@@ -24,6 +27,7 @@ class StaffAdapter(private val staffList: List<User>) : RecyclerView.Adapter<Sta
         val staff = staffList[position]
         holder.nameTextView.text = staff.username
         holder.emailTextView.text = staff.email
+        holder.itemView.setOnClickListener { onItemClick(staff) }
     }
 
     override fun getItemCount(): Int {

@@ -3,6 +3,7 @@ package com.faa.cuiportal.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faa.cuiportal.Model.Request
 import com.faa.cuiportal.R
 
-class RequestAdapter : ListAdapter<Request, RequestAdapter.RequestViewHolder>(RequestDiffCallback()) {
+class RequestAdapter(private val onItemClick: (Request) -> Unit) : ListAdapter<Request, RequestAdapter.RequestViewHolder>(RequestDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_new_request, parent, false)
@@ -18,16 +19,20 @@ class RequestAdapter : ListAdapter<Request, RequestAdapter.RequestViewHolder>(Re
     }
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClick)
     }
 
     class RequestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val requestId: TextView = itemView.findViewById(R.id.request_id)
         private val requestTitle: TextView = itemView.findViewById(R.id.request_title)
+        private val viewButton: Button = itemView.findViewById(R.id.view_button)
 
-        fun bind(request: Request) {
+        fun bind(request: Request, onItemClick: (Request) -> Unit) {
             requestId.text = "ID: ${request.id}"
             requestTitle.text = request.title
+            viewButton.setOnClickListener {
+                onItemClick(request)
+            }
         }
     }
 

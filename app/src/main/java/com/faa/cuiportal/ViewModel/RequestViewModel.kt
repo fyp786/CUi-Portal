@@ -1,4 +1,3 @@
-// ViewModel/RequestViewModel.kt
 package com.faa.cuiportal.ViewModel
 
 import android.util.Log
@@ -33,5 +32,4 @@ class RequestViewModel(private val repository: RequestRepository) : ViewModel() 
             )
         }
     }
-
 }

@@ -60,12 +60,14 @@ class SignUpActivity : AppCompatActivity() {
                         when (userType) {
                             "user" -> {
                                 val intent = Intent(this, UserDashboardActivity::class.java)
-                                intent.putExtra("USERNAME", username.text.toString()) // Pass the username
+                                intent.putExtra("USERNAME", username.text.toString())
                                 startActivity(intent)
                                 finish()
                             }
                             "staff" -> {
-                                startActivity(Intent(this, StaffDashboardActivity::class.java))
+                                val intent = Intent(this, StaffDashboardActivity::class.java)
+                                intent.putExtra("USERNAME", username.text.toString())
+                                startActivity(intent)
                                 finish()
                             }
                         }

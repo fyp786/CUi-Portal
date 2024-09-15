@@ -7,5 +7,7 @@ data class Request(
     val location: String,
     val roomNumber: String,
     val username: String,
-    val status: String
+    val status: String,
+    val created_at: String
+
 )

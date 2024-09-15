@@ -55,14 +55,16 @@ class LoginActivity : AppCompatActivity() {
             if (response.user_type != null) {
                 val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putString("username", response.username) // Save username
+                editor.putString("username", response.username)
                 editor.apply()
 
                 val intent = when (response.user_type) {
                     "user" -> Intent(this, UserDashboardActivity::class.java).apply {
                         putExtra("USERNAME", response.username)
                     }
-                    "staff" -> Intent(this, StaffDashboardActivity::class.java)
+                    "staff" -> Intent(this, StaffDashboardActivity::class.java).apply {
+                        putExtra("USERNAME", response.username)
+                    }
                     "admin" -> Intent(this, AdminDashboardActivity::class.java)
                     else -> null
                 }

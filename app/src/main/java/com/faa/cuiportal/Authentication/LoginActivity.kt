@@ -20,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var createNewAccount: TextView
     private lateinit var signInViewModel: SignInViewModel
 
+    private var enteredEmail: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -41,30 +43,35 @@ class LoginActivity : AppCompatActivity() {
         }
 
         signInButton.setOnClickListener {
-            val enteredEmail = email.text.toString().trim()
+            enteredEmail = email.text.toString().trim()
             val enteredPassword = password.text.toString().trim()
 
-            if (enteredEmail.isNotEmpty() && enteredPassword.isNotEmpty()) {
-                signInViewModel.login(enteredEmail, enteredPassword)
+            if (enteredEmail!!.isNotEmpty() && enteredPassword.isNotEmpty()) {
+                signInViewModel.login(enteredEmail!!, enteredPassword)
             } else {
                 Toast.makeText(this, "Please fill in both email and password", Toast.LENGTH_SHORT).show()
             }
         }
 
         signInViewModel.response.observe(this) { response ->
-            if (response.user_type != null) {
+            if (response.status == "success") {
                 val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.putString("username", response.username)
+                editor.putString("email", response.email)
                 editor.apply()
 
                 val intent = when (response.user_type) {
                     "user" -> Intent(this, UserDashboardActivity::class.java).apply {
                         putExtra("USERNAME", response.username)
                     }
+
                     "staff" -> Intent(this, StaffDashboardActivity::class.java).apply {
                         putExtra("USERNAME", response.username)
+                        putExtra("EMAIL", enteredEmail)
+
                     }
+
                     "admin" -> Intent(this, AdminDashboardActivity::class.java)
                     else -> null
                 }
@@ -72,11 +79,22 @@ class LoginActivity : AppCompatActivity() {
                 intent?.let {
                     startActivity(it)
                     finish()
+
+                    val emailToShow = response.email ?: enteredEmail
+                    Toast.makeText(
+                        this,
+                        "Welcome ${response.username}. Email: $emailToShow",
+                        Toast.LENGTH_LONG
+                    ).show()
                 } ?: run {
                     Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    response.message ?: "Login failed. Please try again.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

@@ -19,21 +19,21 @@ class SignUpViewModel : ViewModel() {
             .enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: RetrofitResponse<ApiResponse>) {
                     if (response.isSuccessful && response.body() != null) {
-                        _response.value = response.body()
+                        _response.value = response.body()?.copy(status = "success")
                     } else {
-                        // Handle API response error
                         _response.value = ApiResponse(
+                            status = "error",
                             message = "Error creating account",
-                            username = username // Include username if necessary
+                            username = username
                         )
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                    // Handle network error
                     _response.value = ApiResponse(
+                        status = "error",
                         message = "Error: ${t.message}",
-                        username = username // Include username if necessary
+                        username = username
                     )
                 }
             })

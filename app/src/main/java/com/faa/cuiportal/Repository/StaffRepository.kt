@@ -28,7 +28,7 @@ class StaffRepository {
 
 
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                _staffList.postValue(emptyList()) // Handle failure
+                _staffList.postValue(emptyList())
             }
         })
     }

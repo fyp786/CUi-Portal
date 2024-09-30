@@ -23,13 +23,14 @@ class SignInViewModel : ViewModel() {
                         val apiResponse = response.body()
                         Log.d("LoginResponse", "Response body: $apiResponse")
 
-                        // Handle response
-                        _response.value = apiResponse
+                        _response.value = apiResponse?.copy(status = "success")
                     } else {
                         Log.e("LoginError", "Error response code: ${response.code()}")
                         _response.value = ApiResponse(
+                            status = "error",
                             message = "Invalid credentials",
-                            username = null // Or provide a default value if applicable
+                            username = null,
+                            user_id = null
                         )
                     }
                 }
@@ -37,8 +38,10 @@ class SignInViewModel : ViewModel() {
                 override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                     Log.e("LoginError", "API call failed: ${t.message}")
                     _response.value = ApiResponse(
+                        status = "error",
                         message = "Error: ${t.message}",
-                        username = null // Or provide a default value if applicable
+                        username = null,
+                        user_id = null
                     )
                 }
             })

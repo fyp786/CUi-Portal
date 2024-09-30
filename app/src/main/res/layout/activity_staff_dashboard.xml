@@ -65,7 +65,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- RecyclerView for Assigned Tasks -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assignedTasksRecyclerView"
         android:layout_width="match_parent"
@@ -74,7 +73,6 @@
         android:layout_marginTop="8dp"
         android:nestedScrollingEnabled="false"/>
 
-    <!-- Notifications Label -->
     <TextView
         android:id="@+id/notificationsLabel"
         android:layout_width="wrap_content"

@@ -19,7 +19,6 @@ class UserDashboardActivity : AppCompatActivity() {
 
         requestMaintenanceLayout = findViewById(R.id.requestmaintanace)
 
-        // Retrieve the username from the Intent
         userId = intent.getStringExtra("user_id") ?: "unknown_id"
         username = intent.getStringExtra("USERNAME") ?: ""
 

@@ -1,6 +1,5 @@
 package com.faa.cuiportal.Users
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*

@@ -60,5 +60,16 @@ interface ApiService {
     ): Call<List<User>>
     @GET("fetch_new_requests.php")
     fun getNewRequests(): Call<List<Request>>
+    @FormUrlEncoded
+    @POST("assign_staff.php")
+    fun assignStaff(
+        @Field("action") action: String = "assign_staff",
+        @Field("id") id: Int,
+        @Field("staff_id") staffId: Int,
+        @Field("staff_email") staffEmail: String
+    ): Call<ApiResponse>
+
+    @GET("fetch_assigned_complaints.php")
+    fun getComplaintsByEmail(@Query("staff_email") staffEmail: String): Call<List<Request>>
 
 }

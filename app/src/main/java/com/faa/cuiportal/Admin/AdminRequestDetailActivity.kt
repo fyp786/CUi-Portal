@@ -1,5 +1,4 @@
 package com.faa.cuiportal.Admin
-// AdminRequestDetailActivity.kt
 
 import android.content.Intent
 import android.os.Bundle

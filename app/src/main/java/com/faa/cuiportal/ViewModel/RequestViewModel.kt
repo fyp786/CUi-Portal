@@ -18,6 +18,7 @@ class RequestViewModel(private val repository: RequestRepository) : ViewModel() 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    // Fetch new requests
     fun fetchNewRequests() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getNewRequests(
@@ -27,6 +28,22 @@ class RequestViewModel(private val repository: RequestRepository) : ViewModel() 
                 },
                 onError = { errorMessage ->
                     Log.e("RequestViewModel", "Error: $errorMessage")
+                    _error.postValue(errorMessage)
+                }
+            )
+        }
+    }
+
+    // Fetch complaints based on staff email
+    fun getComplaintsByStaffEmail(email: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.fetchComplaintsByEmail(email,
+                onResult = { complaints ->
+                    Log.d("RequestViewModel", "Fetched complaints: $complaints")
+                    _requests.postValue(complaints)
+                },
+                onError = { errorMessage ->
+                    Log.e("RequestViewModel", "Error fetching complaints: $errorMessage")
                     _error.postValue(errorMessage)
                 }
             )
